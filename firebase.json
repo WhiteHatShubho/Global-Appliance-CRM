@@ -1,18 +1,4 @@
 {
-  "hosting": [
-    {
-      "target": "admin",
-      "public": "admin-panel/build",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      "rewrites": [{"source": "**", "destination": "/index.html"}]
-    },
-    {
-      "target": "technician",
-      "public": "technician-web/build",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      "rewrites": [{"source": "**", "destination": "/index.html"}]
-    }
-  ],
   "functions": [
     {
       "source": "functions",
