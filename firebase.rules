@@ -4,7 +4,7 @@
     ".write": true,
 
     "admins": {
-      ".indexOn": ["email"],
+      ".indexOn": ["email", "phone"],
       "$uid": {
         ".read": true,
         ".write": "auth.uid === $uid && root.child('admins').child(auth.uid).child('role').val() === 'admin'"
@@ -12,7 +12,7 @@
     },
 
     "technicians": {
-      ".indexOn": ["email", "phone"],
+      ".indexOn": ["phone", "email"],
       "$uid": {
         ".read": true,
         ".write": "auth.uid === $uid || root.child('admins').child(auth.uid).child('role').val() === 'admin'"
@@ -20,7 +20,7 @@
     },
 
     "customers": {
-      ".indexOn": ["email"],
+      ".indexOn": ["email", "phone"],
       "$customerId": {
         ".read": true,
         ".write": "root.child('admins').child(auth.uid).child('role').val() === 'admin'"
@@ -28,7 +28,7 @@
     },
 
     "tickets": {
-      ".indexOn": ["assignedToId", "customerId"],
+      ".indexOn": ["assignedToId", "customerId", "status"],
       "$ticketId": {
         ".read": true,
         ".write": "root.child('admins').child(auth.uid).child('role').val() === 'admin' || auth.uid === root.child('tickets').child($ticketId).child('assignedToId').val()"
@@ -36,6 +36,7 @@
     },
 
     "payments": {
+      ".indexOn": ["ticketId", "status"],
       "$paymentId": {
         ".read": true,
         ".write": "root.child('admins').child(auth.uid).child('role').val() === 'admin'"
@@ -43,6 +44,7 @@
     },
 
     "attendance": {
+      ".indexOn": ["date", "status"],
       "$userId": {
         ".read": "auth.uid === $userId || root.child('admins').child(auth.uid).child('role').val() === 'admin'",
         ".write": "auth.uid === $userId || root.child('admins').child(auth.uid).child('role').val() === 'admin'"
