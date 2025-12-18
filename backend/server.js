@@ -1,27 +1,30 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const admin = require('firebase-admin');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Initialize Firebase Admin (use your existing Firebase config)
-// You'll need to add your Firebase service account key
-const serviceAccount = require('./firebase-service-account.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://YOUR_PROJECT_ID.firebaseio.com' // Replace with your Firebase URL
-});
-
-const db = admin.database();
+// Firebase Admin (optional - only if credentials file exists)
+let admin, db;
+try {
+  admin = require('firebase-admin');
+  const serviceAccount = require('./firebase-service-account.json');
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: process.env.FIREBASE_DATABASE_URL || 'https://service-management-syste-5a9f5.firebaseio.com'
+  });
+  db = admin.database();
+} catch (error) {
+  console.warn('⚠️  Firebase Admin not configured - using mock DB');
+  db = null;
+}
 
 // Store active payment sessions
 const paymentSessions = new Map();
