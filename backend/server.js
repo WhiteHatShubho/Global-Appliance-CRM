@@ -142,7 +142,22 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Payment webhook server running' });
 });
 
-app.listen(PORT, () => {
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ status: 'running', service: 'Global Appliance CRM Backend' });
+});
+
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Payment webhook server running on port ${PORT}`);
+  console.log(`Health check: http://localhost:${PORT}/health`);
   console.log(`Webhook URL: http://localhost:${PORT}/api/bharatpe/webhook`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully...');
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });
