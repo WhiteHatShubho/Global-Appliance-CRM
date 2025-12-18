@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "719700732732",
+    "firebase_url": "https://service-management-syste-5a9f5-default-rtdb.firebaseio.com",
+    "project_id": "service-management-syste-5a9f5",
+    "storage_bucket": "service-management-syste-5a9f5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719700732732:android:60427198ccd23985148c39",
+        "android_client_info": {
+          "package_name": "TECH.GLOBAL.COM"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfGyp49u_SFIEHaLWUr04YuR8GqL3TC-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

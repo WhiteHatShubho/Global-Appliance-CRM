@@ -1,0 +1,57 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+
+    "admins": {
+      ".indexOn": ["email"],
+      "$uid": {
+        ".read": true,
+        ".write": "auth.uid === $uid && root.child('admins').child(auth.uid).child('role').val() === 'admin'"
+      }
+    },
+
+    "technicians": {
+      ".indexOn": ["email", "phone"],
+      "$uid": {
+        ".read": true,
+        ".write": "auth.uid === $uid || root.child('admins').child(auth.uid).child('role').val() === 'admin'"
+      }
+    },
+
+    "customers": {
+      ".indexOn": ["email"],
+      "$customerId": {
+        ".read": true,
+        ".write": "root.child('admins').child(auth.uid).child('role').val() === 'admin'"
+      }
+    },
+
+    "tickets": {
+      ".indexOn": ["assignedToId", "customerId"],
+      "$ticketId": {
+        ".read": true,
+        ".write": "root.child('admins').child(auth.uid).child('role').val() === 'admin' || auth.uid === root.child('tickets').child($ticketId).child('assignedToId').val()"
+      }
+    },
+
+    "payments": {
+      "$paymentId": {
+        ".read": true,
+        ".write": "root.child('admins').child(auth.uid).child('role').val() === 'admin'"
+      }
+    },
+
+    "attendance": {
+      "$userId": {
+        ".read": "auth.uid === $userId || root.child('admins').child(auth.uid).child('role').val() === 'admin'",
+        ".write": "auth.uid === $userId || root.child('admins').child(auth.uid).child('role').val() === 'admin'"
+      }
+    },
+
+    "auditLogs": {
+      ".read": "root.child('admins').child(auth.uid).child('role').val() === 'admin'",
+      ".write": "root.child('admins').child(auth.uid).child('role').val() === 'admin'"
+    }
+  }
+}

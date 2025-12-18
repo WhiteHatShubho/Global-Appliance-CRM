@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "service-management-syste-5a9f5"
+  },
+  "targets": {
+    "service-management-syste-5a9f5": {
+      "hosting": {
+        "admin": [
+          "admin-panel"
+        ],
+        "technician": [
+          "technician-web"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

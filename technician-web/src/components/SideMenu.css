@@ -1,0 +1,118 @@
+:root {
+  --bg: #dde8f3;
+  --menu-bg: rgba(255, 255, 255, 0.7);
+  --border: rgba(0, 0, 0, 0.06);
+  --accent: #0066ff;
+  --text: #111827;
+  --muted: #6b7280;
+  --radius: 16px;
+  --transition: 0.3s ease;
+}
+
+.side-menu {
+  position: fixed;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 1rem;
+  background: var(--menu-bg);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 100;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 60px;
+  height: 50px;
+  border-radius: var(--radius);
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.menu-link:hover,
+.menu-link:focus-visible,
+.menu-link.active {
+  width: 150px;
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.4);
+}
+
+.menu-icon {
+  font-family: "Material Symbols Rounded";
+  font-size: 26px;
+  margin-left: 16px;
+  flex-shrink: 0;
+  transition: transform var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-link:hover .menu-icon,
+.menu-link:focus-visible .menu-icon,
+.menu-link.active .menu-icon {
+  transform: scale(1.1);
+}
+
+.menu-title {
+  margin-left: 12px;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity var(--transition), transform var(--transition);
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.menu-link:hover .menu-title,
+.menu-link:focus-visible .menu-title,
+.menu-link.active .menu-title {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.logout-btn {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.logout-btn:hover,
+.logout-btn:focus-visible {
+  background: #dc2626;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+/* Responsive: Hide on mobile */
+@media (max-width: 768px) {
+  .side-menu {
+    left: 0.5rem;
+    top: auto;
+    bottom: 80px;
+    flex-direction: row;
+    width: calc(100% - 1rem);
+    transform: none;
+  }
+}
+
+/* Material Symbols fallback */
+@font-face {
+  font-family: "Material Symbols Rounded";
+  src: url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL@20..48,100..700,0..1") format("woff2");
+}

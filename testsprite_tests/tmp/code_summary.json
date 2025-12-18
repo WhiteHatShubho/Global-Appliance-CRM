@@ -1,0 +1,481 @@
+{
+  "tech_stack": [
+    "JavaScript (ES2020)",
+    "React 18 with React Router",
+    "Firebase Realtime Database & Auth",
+    "Express 4 static server",
+    "Flutter 3 technician client"
+  ],
+  "features": [
+    {
+      "name": "Customer Management API",
+      "description": "CRUD helpers for customer profiles stored under the Firebase Realtime Database customers node.",
+      "files": [
+        "admin-panel/src/services/dataService.js",
+        "admin-panel/src/components/Customers.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.3",
+        "info": {
+          "title": "Customer Management",
+          "version": "1.0.0"
+        },
+        "paths": {
+          "/customers": {
+            "get": {
+              "summary": "List customers",
+              "responses": {
+                "200": {
+                  "description": "Array of customers"
+                }
+              }
+            },
+            "post": {
+              "summary": "Create customer",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "201": {
+                  "description": "Created"
+                }
+              }
+            }
+          },
+          "/customers/{id}": {
+            "patch": {
+              "summary": "Update customer",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              ],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Updated"
+                }
+              }
+            },
+            "delete": {
+              "summary": "Delete customer",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              ],
+              "responses": {
+                "204": {
+                  "description": "Deleted"
+                }
+              }
+            }
+          }
+        },
+        "components": {
+          "schemas": {
+            "Customer": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "phone"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Ticket Workflow API",
+      "description": "Creates and updates service tickets linked to customers and technicians in Firebase.",
+      "files": [
+        "admin-panel/src/services/dataService.js",
+        "admin-panel/src/components/Tickets.js",
+        "admin-panel/src/components/Dashboard.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.3",
+        "info": {
+          "title": "Ticket Workflow",
+          "version": "1.0.0"
+        },
+        "paths": {
+          "/tickets": {
+            "get": {
+              "summary": "List tickets",
+              "responses": {
+                "200": {
+                  "description": "Array of tickets"
+                }
+              }
+            },
+            "post": {
+              "summary": "Create ticket",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Ticket"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "201": {
+                  "description": "Created"
+                }
+              }
+            }
+          },
+          "/tickets/{id}": {
+            "patch": {
+              "summary": "Update ticket status or assignment",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              ],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Ticket"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Updated"
+                }
+              }
+            }
+          }
+        },
+        "components": {
+          "schemas": {
+            "Ticket": {
+              "type": "object",
+              "properties": {
+                "customerId": {
+                  "type": "string"
+                },
+                "technicianId": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "scheduledDate": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "customerId",
+                "status"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Technician Directory API",
+      "description": "Manages technician roster, status, and assignments in Firebase.",
+      "files": [
+        "admin-panel/src/services/dataService.js",
+        "admin-panel/src/components/Technicians.js",
+        "technician_app/lib/services/firebase_service.dart"
+      ],
+      "api_doc": {
+        "openapi": "3.0.3",
+        "info": {
+          "title": "Technician Directory",
+          "version": "1.0.0"
+        },
+        "paths": {
+          "/technicians": {
+            "get": {
+              "summary": "List technicians",
+              "responses": {
+                "200": {
+                  "description": "Array of technicians"
+                }
+              }
+            },
+            "post": {
+              "summary": "Create technician",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Technician"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "201": {
+                  "description": "Created"
+                }
+              }
+            }
+          },
+          "/technicians/{id}": {
+            "patch": {
+              "summary": "Update technician",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              ],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Technician"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Updated"
+                }
+              }
+            }
+          }
+        },
+        "components": {
+          "schemas": {
+            "Technician": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "status"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Payment Tracking API",
+      "description": "Records payments against tickets and displays them in the admin dashboard.",
+      "files": [
+        "admin-panel/src/services/dataService.js",
+        "admin-panel/src/components/Payments.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.3",
+        "info": {
+          "title": "Payment Tracking",
+          "version": "1.0.0"
+        },
+        "paths": {
+          "/payments": {
+            "get": {
+              "summary": "List payments",
+              "responses": {
+                "200": {
+                  "description": "Array of payments"
+                }
+              }
+            },
+            "post": {
+              "summary": "Create payment entry",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Payment"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "201": {
+                  "description": "Created"
+                }
+              }
+            }
+          }
+        },
+        "components": {
+          "schemas": {
+            "Payment": {
+              "type": "object",
+              "properties": {
+                "ticketId": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "method": {
+                  "type": "string"
+                },
+                "receivedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "ticketId",
+                "amount"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "OTP Authentication API",
+      "description": "Uses Firebase phone auth with a local test harness for login flows in the admin and technician clients.",
+      "files": [
+        "admin-panel/src/services/otpService.js",
+        "admin-panel/src/components/LoginOTP.js",
+        "technician-web/src/services/otpService.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.3",
+        "info": {
+          "title": "OTP Authentication",
+          "version": "1.0.0"
+        },
+        "paths": {
+          "/auth/otp/send": {
+            "post": {
+              "summary": "Request OTP",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "phoneNumber": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "phoneNumber"
+                      ]
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "OTP sent"
+                }
+              }
+            }
+          },
+          "/auth/otp/verify": {
+            "post": {
+              "summary": "Verify OTP",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "otp": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "otp"
+                      ]
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Authenticated"
+                },
+                "400": {
+                  "description": "Invalid OTP"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,10 @@
+node_modules/
+*.lock
+.env
+.env.local
+build/
+dist/
+.DS_Store
+*.log
+.vscode/
+.idea/

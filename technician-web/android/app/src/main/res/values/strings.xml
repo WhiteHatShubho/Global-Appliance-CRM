@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Global Appliance Tech</string>
+    <string name="title_activity_main">Global Appliance Tech</string>
+    <string name="package_name">com.globalappliance.technician</string>
+    <string name="custom_url_scheme">com.globalappliance.technician</string>
+</resources>

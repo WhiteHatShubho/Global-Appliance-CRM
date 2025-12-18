@@ -1,0 +1,113 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#16213e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f3460;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="toolGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f7931e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentTech" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" fill="url(#techGradient)"/>
+  
+  <!-- Circular background ring -->
+  <circle cx="256" cy="200" r="150" fill="none" stroke="url(#toolGradient)" stroke-width="6" opacity="0.4"/>
+  
+  <!-- Left hand (worker/technician) -->
+  <g>
+    <!-- Forearm -->
+    <rect x="80" y="150" width="95" height="32" fill="url(#toolGradient)" rx="16" transform="rotate(-25 127 166)"/>
+    <!-- Hand -->
+    <circle cx="140" cy="210" r="22" fill="url(#toolGradient)"/>
+    <!-- Fingers -->
+    <circle cx="120" cy="195" r="8" fill="url(#toolGradient)" opacity="0.8"/>
+    <circle cx="160" cy="195" r="8" fill="url(#toolGradient)" opacity="0.8"/>
+  </g>
+  
+  <!-- Right hand (worker/technician) -->
+  <g>
+    <!-- Forearm -->
+    <rect x="337" y="150" width="95" height="32" fill="url(#toolGradient)" rx="16" transform="rotate(25 384 166)"/>
+    <!-- Hand -->
+    <circle cx="372" cy="210" r="22" fill="url(#toolGradient)"/>
+    <!-- Fingers -->
+    <circle cx="352" cy="195" r="8" fill="url(#toolGradient)" opacity="0.8"/>
+    <circle cx="392" cy="195" r="8" fill="url(#toolGradient)" opacity="0.8"/>
+  </g>
+  
+  <!-- Wrench (primary tool) -->
+  <g>
+    <rect x="215" y="165" width="82" height="18" fill="url(#accentTech)" rx="9" transform="rotate(15 256 174)"/>
+    <circle cx="245" cy="174" r="14" fill="none" stroke="url(#accentTech)" stroke-width="4"/>
+    <circle cx="245" cy="174" r="7" fill="url(#accentTech)"/>
+    <!-- Wrench jaw -->
+    <path d="M 310 155 Q 330 160 335 175 Q 330 185 310 185" fill="url(#accentTech)" opacity="0.9"/>
+  </g>
+  
+  <!-- Screwdriver (secondary tool) -->
+  <g>
+    <line x1="280" y1="280" x2="285" y2="220" stroke="url(#accentTech)" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="283" cy="280" r="8" fill="url(#accentTech)"/>
+    <!-- Screwdriver tip -->
+    <line x1="283" y1="215" x2="278" y2="205" stroke="url(#accentTech)" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Service/check mark circle -->
+  <circle cx="256" cy="200" r="85" fill="none" stroke="url(#accentTech)" stroke-width="4" opacity="0.6"/>
+  
+  <!-- AI Chip/Circuit inside check mark circle -->
+  <g opacity="0.8">
+    <!-- Main chip square -->
+    <rect x="240" y="185" width="32" height="32" fill="none" stroke="url(#accentTech)" stroke-width="2" rx="3"/>
+    
+    <!-- AI circuit nodes -->
+    <circle cx="245" cy="190" r="3" fill="url(#accentTech)"/>
+    <circle cx="267" cy="190" r="3" fill="url(#accentTech)"/>
+    <circle cx="245" cy="212" r="3" fill="url(#accentTech)"/>
+    <circle cx="267" cy="212" r="3" fill="url(#accentTech)"/>
+    <circle cx="256" cy="201" r="4" fill="url(#accentTech)" opacity="0.9"/>
+    
+    <!-- Circuit traces -->
+    <line x1="245" y1="190" x2="256" y2="201" stroke="url(#accentTech)" stroke-width="1" opacity="0.6"/>
+    <line x1="267" y1="190" x2="256" y2="201" stroke="url(#accentTech)" stroke-width="1" opacity="0.6"/>
+    <line x1="245" y1="212" x2="256" y2="201" stroke="url(#accentTech)" stroke-width="1" opacity="0.6"/>
+    <line x1="267" y1="212" x2="256" y2="201" stroke="url(#accentTech)" stroke-width="1" opacity="0.6"/>
+    <line x1="245" y1="190" x2="245" y2="212" stroke="url(#accentTech)" stroke-width="1" opacity="0.4"/>
+    <line x1="267" y1="190" x2="267" y2="212" stroke="url(#accentTech)" stroke-width="1" opacity="0.4"/>
+  </g>
+  
+  <!-- Check mark inside circle -->
+  <g stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="220,210 245,235 305,165"/>
+  </g>
+  
+  <!-- AI Energy pulse around chip -->
+  <g stroke="url(#accentTech)" stroke-width="1" fill="none" opacity="0.5">
+    <circle cx="256" cy="201" r="42" stroke-dasharray="4,4"/>
+  </g>
+  
+  <!-- Sparkle/quality indicator - top -->
+  <circle cx="360" cy="120" r="6" fill="url(#toolGradient)"/>
+  <line x1="360" y1="110" x2="360" y2="100" stroke="url(#toolGradient)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="370" y1="120" x2="380" y2="120" stroke="url(#toolGradient)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="350" y1="120" x2="340" y2="120" stroke="url(#toolGradient)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="368" y1="112" x2="375" y2="105" stroke="url(#toolGradient)" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Sparkle - bottom right -->
+  <circle cx="340" cy="300" r="5" fill="url(#accentTech)"/>
+  <line x1="340" y1="290" x2="340" y2="282" stroke="url(#accentTech)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="350" y1="300" x2="358" y2="300" stroke="url(#accentTech)" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Text section -->
+  <text x="256" y="380" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="white" letter-spacing="1">GLOBAL APPLIANCE</text>
+  <text x="256" y="410" font-family="Arial, sans-serif" font-size="16" font-weight="600" text-anchor="middle" fill="url(#toolGradient)" letter-spacing="0.5">TECHNICIAN</text>
+  <text x="256" y="455" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#ffffff" letter-spacing="1" opacity="0.8">FIELD SERVICE EXCELLENCE</text>
+</svg>

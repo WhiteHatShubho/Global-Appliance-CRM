@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Service Management Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
+        .header { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 15px 20px; margin-bottom: 20px; }
+        .btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .btn:disabled { background: #ccc; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #f8f9fa; }
+        .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.8em; }
+        .status-open { background: #d4edda; color: #155724; }
+        .status-assigned { background: #cce7ff; color: #004085; }
+        .status-completed { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Service Management System - Demo</h1>
+        <p>Demonstrating Firebase connection and basic functionality</p>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Connection Status</h2>
+            <div id="connection-status">Testing connection...</div>
+            <button id="test-btn" class="btn">Test Connection</button>
+        </div>
+        
+        <div class="card">
+            <h2>Customers</h2>
+            <button id="add-customer-btn" class="btn">Add Customer</button>
+            <div id="customers-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customers-body">
+                        <tr>
+                            <td colspan="5">Loading customers...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Tickets</h2>
+            <button id="add-ticket-btn" class="btn">Add Ticket</button>
+            <div id="tickets-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Assigned To</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tickets-body">
+                        <tr>
+                            <td colspan="6">Loading tickets...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+        import { getDatabase, ref, set, push, onValue } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDN_WvokwbsKaHJMd70hscE030DTNFfZxI",
+            authDomain: "service-management-syste-5a9f5.firebaseapp.com",
+            databaseURL: "https://service-management-syste-5a9f5-default-rtdb.firebaseio.com",
+            projectId: "service-management-syste-5a9f5",
+            storageBucket: "service-management-syste-5a9f5.firebasestorage.app",
+            messagingSenderId: "719700732732",
+            appId: "1:719700732732:web:0cbc53d5e99f66cb148c39"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        
+        // DOM elements
+        const connectionStatus = document.getElementById('connection-status');
+        const testBtn = document.getElementById('test-btn');
+        const customersBody = document.getElementById('customers-body');
+        const ticketsBody = document.getElementById('tickets-body');
+        
+        // Test connection
+        async function testConnection() {
+            try {
+                connectionStatus.textContent = 'Testing connection...';
+                testBtn.disabled = true;
+                
+                // Write test data
+                const testRef = ref(db, 'test/demo');
+                await set(testRef, {
+                    timestamp: new Date().toISOString(),
+                    status: 'connected'
+                });
+                
+                connectionStatus.innerHTML = '<span style="color: green;">✅ Connected to Firebase successfully!</span>';
+            } catch (error) {
+                connectionStatus.innerHTML = `<span style="color: red;">❌ Connection failed: ${error.message}</span>`;
+            } finally {
+                testBtn.disabled = false;
+            }
+        }
+        
+        // Load customers
+        function loadCustomers() {
+            const customersRef = ref(db, 'customers');
+            onValue(customersRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const customers = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+                    renderCustomers(customers);
+                } else {
+                    customersBody.innerHTML = '<tr><td colspan="5">No customers found</td></tr>';
+                }
+            });
+        }
+        
+        // Load tickets
+        function loadTickets() {
+            const ticketsRef = ref(db, 'tickets');
+            onValue(ticketsRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const tickets = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+                    renderTickets(tickets);
+                } else {
+                    ticketsBody.innerHTML = '<tr><td colspan="6">No tickets found</td></tr>';
+                }
+            });
+        }
+        
+        // Render customers
+        function renderCustomers(customers) {
+            if (customers.length === 0) {
+                customersBody.innerHTML = '<tr><td colspan="5">No customers found</td></tr>';
+                return;
+            }
+            
+            customersBody.innerHTML = customers.map(customer => `
+                <tr>
+                    <td>${customer.id}</td>
+                    <td>${customer.name || ''}</td>
+                    <td>${customer.phone || ''}</td>
+                    <td>${customer.email || ''}</td>
+                    <td>${customer.address || ''}</td>
+                </tr>
+            `).join('');
+        }
+        
+        // Render tickets
+        function renderTickets(tickets) {
+            if (tickets.length === 0) {
+                ticketsBody.innerHTML = '<tr><td colspan="6">No tickets found</td></tr>';
+                return;
+            }
+            
+            ticketsBody.innerHTML = tickets.map(ticket => `
+                <tr>
+                    <td>${ticket.id}</td>
+                    <td>${ticket.customerName || ''}</td>
+                    <td>${ticket.title || ''}</td>
+                    <td><span class="status-badge status-${ticket.status || 'open'}">${ticket.status || 'open'}</span></td>
+                    <td>${ticket.priority || 'medium'}</td>
+                    <td>${ticket.assignedTo || 'Unassigned'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        // Add sample data
+        async function addSampleData() {
+            try {
+                // Add sample customer
+                const customerRef = push(ref(db, 'customers'));
+                await set(customerRef, {
+                    name: 'John Doe',
+                    phone: '+1234567890',
+                    email: 'john@example.com',
+                    address: '123 Main St, City'
+                });
+                
+                // Add sample ticket
+                const ticketRef = push(ref(db, 'tickets'));
+                await set(ticketRef, {
+                    customerName: 'John Doe',
+                    title: 'AC Not Cooling',
+                    description: 'Air conditioner is not cooling properly',
+                    status: 'open',
+                    priority: 'high',
+                    assignedTo: 'Unassigned',
+                    createdAt: new Date().toISOString().split('T')[0]
+                });
+                
+                console.log('Sample data added');
+            } catch (error) {
+                console.error('Error adding sample data:', error);
+            }
+        }
+        
+        // Event listeners
+        testBtn.addEventListener('click', testConnection);
+        document.getElementById('add-customer-btn').addEventListener('click', addSampleData);
+        document.getElementById('add-ticket-btn').addEventListener('click', addSampleData);
+        
+        // Initialize
+        testConnection();
+        loadCustomers();
+        loadTickets();
+    </script>
+</body>
+</html>

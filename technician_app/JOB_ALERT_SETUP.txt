@@ -1,0 +1,148 @@
+==================================================
+JOB ALERT SOUND - SETUP INSTRUCTIONS
+==================================================
+
+✅ IMPLEMENTATION COMPLETE
+
+The new job alert sound system is fully integrated into the Technician App.
+
+==================================================
+WHAT WAS ADDED
+==================================================
+
+1. SERVICES
+   ✔ jobAlertService.dart - Manages alert sound playback
+   ✔ jobNotificationService.dart - Monitors new jobs and triggers alerts
+
+2. INTEGRATION
+   ✔ home_screen.dart - Initializes job monitoring
+   ✔ pubspec.yaml - Added 'audioplayers' dependency
+
+3. FEATURES IMPLEMENTED
+   ✔ Real-time job monitoring via Firebase Realtime Database
+   ✔ Auto-loop alert sound when new job assigned
+   ✔ Alert stops when app is opened or jobs screen accessed
+   ✔ Job marked as 'notified' in database
+   ✔ Local storage tracking of notified jobs
+   ✔ App lifecycle detection (resume/pause)
+
+==================================================
+AUDIO FILE SETUP (REQUIRED)
+==================================================
+
+You need to add an alert sound file manually:
+
+1. Navigate to: f:\Serve\technician_app\assets\sounds\
+
+2. Add your alert sound file:
+   - Filename: job_alert.mp3
+   - Format: MP3 audio
+   - Duration: 5-10 seconds (will loop)
+   - Loudness: Maximum (equivalent to Swiggy/Zomato alerts)
+
+   Recommended:
+   - Use a loud, attention-grabbing sound
+   - Similar to delivery app notification sounds
+   - Clear and distinguishable
+
+3. Example sound sources:
+   - Download from Freesound.org
+   - Use notification alert from your phone
+   - Create custom alert sound
+
+==================================================
+HOW IT WORKS
+==================================================
+
+TRIGGER:
+- When admin assigns a new job to technician
+- Job status = 'assigned' or 'pending'
+- job.notified = false
+
+ALERT:
+- Sound plays on loop continuously
+- Stays loud until acknowledged
+
+STOP:
+- Technician opens the app
+- OR navigates to "Today's Jobs" screen
+- Sound stops immediately
+- job.notified = true (updated in Firebase)
+
+==================================================
+DATABASE STRUCTURE
+==================================================
+
+Each job needs these fields:
+
+{
+  "jobId": "job_123",
+  "assignedTechnicianId": "tech_456",
+  "status": "assigned",     // assigned | pending | completed
+  "notified": false,        // false when new, true after alert
+  "notifiedAt": "2025-12-16T19:12:50.000Z"  // ISO timestamp
+  // ... other job fields
+}
+
+==================================================
+DEPENDENCIES ADDED
+==================================================
+
+pubspec.yaml includes:
+  - audioplayers: ^5.2.1   (for sound playback)
+  - firebase_database: ^10.2.1 (already present)
+  - shared_preferences: ^2.1.1 (already present)
+
+==================================================
+TESTING
+==================================================
+
+To test the feature:
+
+1. Run: flutter pub get
+   (This installs the new audioplayers dependency)
+
+2. Assign a new job to a technician from admin panel
+
+3. Watch for:
+   ✔ Alert sound plays immediately
+   ✔ Console logs "🔔 NEW JOB ALERT: job_id"
+   ✔ Sound loops continuously
+   ✔ Sound stops when app is opened
+   ✔ Console logs "✅ Job Marked as Notified: job_id"
+
+==================================================
+IMPORTANT NOTES
+==================================================
+
+✓ This feature works ONLY in Technician App
+✓ Admin panel does NOT trigger alerts
+✓ Only one alert plays at a time
+✓ Jobs marked as completed/cancelled won't trigger alerts
+✓ Notified jobs cache is cleared on logout
+
+==================================================
+NEXT STEPS
+==================================================
+
+1. Add the audio file (job_alert.mp3) to assets/sounds/
+2. Run: flutter pub get
+3. Test with admin panel job assignment
+4. Adjust alert sound loudness if needed
+
+==================================================
+TROUBLESHOOTING
+==================================================
+
+If alert sound doesn't play:
+1. Check assets/sounds/job_alert.mp3 exists
+2. Verify flutter pub get was run
+3. Restart the app
+4. Check Firebase database for 'notified' field
+5. Check console logs for error messages
+
+If sound plays too often:
+1. Check 'notified' field is being updated in Firebase
+2. Restart the app to clear in-memory cache
+
+==================================================
