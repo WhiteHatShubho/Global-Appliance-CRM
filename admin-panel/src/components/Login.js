@@ -12,8 +12,6 @@ import { getDatabase, ref, query, orderByChild, equalTo, get } from 'firebase/da
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [showPhoneForm, setShowPhoneForm] = useState(false);
   const [lampOn, setLampOn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -74,29 +72,6 @@ const Login = () => {
     }
   };
 
-  const handlePhoneLogin = async () => {
-    if (!phoneNumber.trim()) {
-      setMessageColor('#ffb3b3');
-      setMessage('❌ Please enter a phone number');
-      return;
-    }
-    
-    try {
-      setMessage('');
-      setLoading(true);
-      showLoader();
-      
-      // Validate phone number
-      const formattedPhone = phoneNumber.includes('+') ? phoneNumber : '+91' + phoneNumber.replace(/\D/g, '');
-      
-      // Check if admin phone exists
-      const adminRef = ref(db, 'admins');
-      const adminQuery = query(adminRef, orderByChild('phone'), equalTo(formattedPhone));
-      const snapshot = await get(adminQuery);
-      
-      if (!snapshot.exists()) {
-        throw new Error('Phone number not registered as admin.');
-      }
       
       // For demo: just login
       const adminData = Object.values(snapshot.val())[0];
@@ -251,87 +226,8 @@ const Login = () => {
         </div>
 
         <div className="login-panel">
-          {/* Quick Phone Login */}
-          {!showPhoneForm && (
-            <div style={{ marginBottom: '15px' }}>
-              <button
-                type="button"
-                onClick={() => setShowPhoneForm(true)}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  background: 'linear-gradient(135deg, #10b981, #059669)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '14px'
-                }}
-              >
-                📱 Login with Phone Number
-              </button>
-            </div>
-          )}
 
-          {/* Phone Number Form */}
-          {showPhoneForm && (
-            <div style={{ marginBottom: '15px' }}>
-              <input
-                type="tel"
-                placeholder="9876543210 or +919876543210"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                disabled={loading}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  borderRadius: '4px',
-                  border: '1px solid #ddd',
-                  marginBottom: '8px',
-                  boxSizing: 'border-box'
-                }}
-              />
-              <button
-                type="button"
-                onClick={handlePhoneLogin}
-                disabled={loading}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  background: '#10b981',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  fontWeight: 'bold',
-                  marginBottom: '8px'
-                }}
-              >
-                {loading ? 'Logging in...' : '✓ Login'}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowPhoneForm(false);
-                  setPhoneNumber('');
-                }}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  background: '#f0f0f0',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '13px'
-                }}
-              >
-                Back to Email Login
-              </button>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} style={{ display: showPhoneForm ? 'none' : 'block' }}>
+          <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
