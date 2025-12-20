@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import sessionManager from './services/sessionManager';
 import biometricAuthService from './services/biometricAuthService';
 import appPermissionManager from './services/appPermissionManager';
+import attendanceAlarmService from './services/attendanceAlarmService';
 import LoginScreen from './screens/LoginScreen';
 import BiometricLoginModal from './components/BiometricLoginModal';
 import TodayJobsScreen from './screens/TodayJobsScreen';
@@ -42,12 +43,17 @@ function App() {
         }
       }
       
+      // Request notification permission for attendance alarm
+      attendanceAlarmService.constructor.requestNotificationPermission();
+      
       // Check session FIRST - this is most important
       const validSession = sessionManager.hasValidSession();
       console.log('🔑 Valid session:', validSession);
       
       if (validSession) {
         setHasSession(true);
+        // Initialize attendance alarm when user is logged in
+        attendanceAlarmService.initialize();
       } else {
         const registeredUser = biometricAuthService.getRegisteredUser();
         if (registeredUser) {
@@ -79,8 +85,13 @@ function App() {
       setHasSession(currentSession);
     }, 5000); // Check every 5 seconds (not every second)
     
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      attendanceAlarmService.destroy();
+    };
   }, []);
+
+  // Check and request permissions on first launch
 
   // Handle back button for Android/mobile devices
   useEffect(() => {
