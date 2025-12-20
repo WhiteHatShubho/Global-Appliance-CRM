@@ -72,41 +72,6 @@ const Login = () => {
     }
   };
 
-      
-      // For demo: just login
-      const adminData = Object.values(snapshot.val())[0];
-      
-      auditService.initialize(db, adminData.id, adminData.email);
-      await auditService.logAdminLogin();
-      backupService.initialize(firebaseApp);
-      
-      sessionManager.createSession(
-        adminData.id,
-        adminData.name || 'Admin',
-        adminData.email
-      );
-      
-      const token = `${formattedPhone}_${Date.now()}`;
-      const expiry = Date.now() + 30*24*60*60*1000;
-      localStorage.setItem('auth', JSON.stringify({ token, expiry, email: adminData.email }));
-      localStorage.setItem('isAdmin', 'true');
-      
-      setMessageColor('lightgreen');
-      setMessage('✅ Phone login successful — redirecting...');
-      
-      setTimeout(() => {
-        hideLoader();
-        navigate('/dashboard');
-      }, 600);
-    } catch (error) {
-      console.error('Phone login failed:', error);
-      setMessageColor('#ffb3b3');
-      setMessage(`❌ ${error.message}`);
-      setLoading(false);
-      hideLoader();
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
